@@ -1,36 +1,24 @@
 import React from 'react'
-import {Card, CardActionArea, CardContent, CardMedia, Typography} from "@mui/material"
-import {useQuery} from "@tanstack/react-query";
-import axios from "axios"
+import {Card, CardActionArea, CardContent, CardMedia, Typography} from '@mui/material'
 
-function PokemonCard({pokemon = 94}) {
-
-    const { data, error, isLoading } = useQuery({
-        queryKey: ["pokemon", pokemon],
-        queryFn: () => axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(res => res.data)
-    })
-
-    if (isLoading) return <div>Loading...</div>
-
-    if (error) return <div>{error}</div>
+function PokemonCard({pokemon}) {
+    if (!pokemon) return <div>No data</div>
 
     return (
         <Card sx={{ width: 245 }}>
             <CardActionArea>
                 <CardMedia
-                    component="img"
-                    height="180"
-                    image= {data.sprites.front_default}
+                    component= "img"
+                    height="220"
+                    image={pokemon.spriteUrl}
                     alt="pokemon image"
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        {data.name}
+                        {pokemon.name}
                     </Typography>
                     <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                        {
-                            data.types.map((t) => t.type.name).join(" / ")
-                        }
+                        {pokemon.typeOne} / {pokemon.typeTwo}
                     </Typography>
                 </CardContent>
             </CardActionArea>
